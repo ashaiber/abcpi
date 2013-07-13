@@ -7,7 +7,7 @@ Adding letter images
 
 * Size the image to 1920x1080 (this assumes a rotated 2335x1650 image. Adjust for other size/orientation):
 
-    gm mogrify -rotate -90 -resize 1920x1357 -crop 1920x1080+0+138 a.jpg
+    gm mogrify -rotate -90 -resize 1920x1357 -crop 1920x1080+0+138 -format png a.jpg
 
 
 
