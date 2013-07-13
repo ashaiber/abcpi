@@ -23,7 +23,7 @@ sounds = {}
 
 def load_media():
     for letter in LETTERS:
-        image_file = r'images/{0}.png'.format(letter)
+        image_file = r'images/{0}.jpg'.format(letter)
         audio_file = r'audio/{0}.wav'.format(letter)
 
         if os.path.exists(image_file) and os.path.exists(audio_file):
@@ -44,7 +44,7 @@ def main():
     pygame.init()
     pygame.mixer.init()
 
-    SW,SH = 640,480
+    SW,SH = 800,600
     background_position = [0,0]
 
     screen = pygame.display.set_mode((SW,SH))
@@ -62,11 +62,12 @@ def main():
                 gameloop = False
 
             elif e.type is KEYDOWN:
-                im = images['a']
+                im = images['b']
                 im.set_colorkey((255,100,255))
 
                 screen.blit(im, background_position)
-                # sounds['a'].play()
+                pygame.display.flip()
+                sounds['b'].play()
                 print(e.key)
 
     pygame.mixer.quit()
