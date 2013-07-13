@@ -44,7 +44,7 @@ def main():
     pygame.init()
     pygame.mixer.init()
 
-    SW,SH = 960,540
+    SW,SH = 1280,720
     background_position = [0,0]
 
     screen = pygame.display.set_mode((SW,SH))
