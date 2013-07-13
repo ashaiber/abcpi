@@ -62,15 +62,9 @@ def main():
                 gameloop = False
 
             elif e.type is KEYDOWN:
-                letter = ''
-                if e.key == 97:
-                    letter = 'a'
-                elif e.key == 98:
-                    letter = 'b'
-                else:
-                    letter = '0'
+                letter = chr(e.key)
 
-                im = pygame.transform.smoothscale(images[letter], (SW,SH))
+                im = pygame.transform.scale(images[letter], (SW,SH))
                 im.set_colorkey((255,100,255))
 
                 screen.blit(im, background_position)
