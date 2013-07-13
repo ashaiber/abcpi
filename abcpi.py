@@ -15,7 +15,7 @@ import os
 import pygame
 from pygame.locals import K_ESCAPE, QUIT, KEYDOWN
 
-LETTERS = 'abcdefghijklmnopqrstuvwxyz'
+LETTERS = 'abcdefghijklmnopqrstuvwxyz0'
 
 
 images = {}
@@ -44,7 +44,7 @@ def main():
     pygame.init()
     pygame.mixer.init()
 
-    SW,SH = 800,600
+    SW,SH = 960,540
     background_position = [0,0]
 
     screen = pygame.display.set_mode((SW,SH))
@@ -62,12 +62,20 @@ def main():
                 gameloop = False
 
             elif e.type is KEYDOWN:
-                im = images['b']
+                letter = ''
+                if e.key == 97:
+                    letter = 'a'
+                elif e.key == 98:
+                    letter = 'b'
+                else:
+                    letter = '0'
+
+                im = pygame.transform.smoothscale(images[letter], (SW,SH))
                 im.set_colorkey((255,100,255))
 
                 screen.blit(im, background_position)
                 pygame.display.flip()
-                sounds['b'].play()
+                sounds[letter].play()
                 print(e.key)
 
     pygame.mixer.quit()
