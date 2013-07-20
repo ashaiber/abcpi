@@ -12,16 +12,17 @@ create the art.
 """
 
 import os
+from collections import namedtuple
 import pygame
 from pygame.locals import K_ESCAPE, QUIT, KEYDOWN
 
 LETTERS = 'abcdefghijklmnopqrstuvwxyz0'
 
+Letter = namedtuple('Letter', ('image', 'sound'))
 
-images = {}
-sounds = {}
 
 def load_media():
+    letters = {}
     for letter in LETTERS:
         image_file = r'images/{0}.jpg'.format(letter)
         audio_file = r'audio/{0}.wav'.format(letter)
@@ -30,54 +31,53 @@ def load_media():
             # Load the image and sound
             try:
                 image = pygame.image.load(image_file).convert()
-                audio = pygame.mixer.Sound(audio_file)
+                sound = pygame.mixer.Sound(audio_file)
 
-                images[letter] = image
-                sounds[letter] = audio
+                letters[letter] = Letter(image=image, sound=sound)
 
                 print("Found the letter '{0}'".format(letter))
             except Exception as e:
-                print("Failed to load the letter '{0}'\n{1}".format(letter,e))
+                print("Failed to load the letter '{0}'\n{1}".format(letter, e))
+    return letters
 
 
 def main():
     pygame.init()
     pygame.mixer.init()
 
-    SW,SH = 1280,720
-    background_position = [0,0]
+    SW, SH = 1280, 720
+    background_position = [0, 0]
 
-    screen = pygame.display.set_mode((SW,SH))
+    screen = pygame.display.set_mode((SW, SH))
     pygame.display.set_caption('A-B-C-Pi')
 
-    load_media()
+    letters = load_media()
 
     # game loop
-    gameloop = True
+    game_in_progress = True
 
-    while gameloop:
+    while game_in_progress:
         for e in pygame.event.get():
             if e.type is QUIT or \
-               e.type is KEYDOWN and e.key == K_ESCAPE: 
-                gameloop = False
+               e.type is KEYDOWN and e.key == K_ESCAPE:
+                game_in_progress = False
 
             elif e.type is KEYDOWN:
-                letter = chr(e.key)
+                try:
+                    letter = chr(e.key).lower()
+                    if letter in letters:
 
-                im = pygame.transform.scale(images[letter], (SW,SH))
-                im.set_colorkey((255,100,255))
+                        im = pygame.transform.scale(letters[letter].image, (SW, SH))
+                        im.set_colorkey((255, 100, 255))
 
-                screen.blit(im, background_position)
-                pygame.display.flip()
-                sounds[letter].play()
-                print(e.key)
+                        screen.blit(im, background_position)
+                        pygame.display.flip()
+                        letters[letter].sound.play()
+                except:
+                    pass
 
     pygame.mixer.quit()
     pygame.quit()
 
 if __name__ == '__main__':
     main()
-
-
-
-
